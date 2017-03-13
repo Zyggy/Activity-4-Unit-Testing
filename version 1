@@ -1,5 +1,20 @@
 import random
 
+class User:
+    def __init__(self, username, email, SS, pass):
+        self.username = username
+        self.email = Email(email)
+        self.SS = SS(SS)
+        self.pass = Hash(pass)
+        
+    def check_password(passwrd):
+        return self.pass == Hash(passwrd)
+    
+    def __str__(self):
+        string = str(self.username) + "\n    " + str(self.email) + "\n    " + str(self.SS)
+        return string
+    
+
 class InvalidEmail(Exception):
     pass
 
@@ -22,7 +37,7 @@ class Email:
 
     def __str__(self):
         return self.email
-
+        
 
 class SS:
 
@@ -47,3 +62,5 @@ class Hash:
     def generate_hash(self, passwd):
         Hash.x += 1
         return Hash.x
+
+class Testing(unittest.TestCase):
