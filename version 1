@@ -1,0 +1,114 @@
+import random
+import unittest
+
+class User:
+    def __init__(self, username, email, SS, pass):
+        self.username = username
+        self.email = Email(email)
+        self.SS = SS(SS)
+        self.pass = Hash(pass)
+        
+    def check_password(passwrd):
+        return self.pass == Hash(passwrd)
+    
+    def __str__(self):
+        string = str(self.username) + "\n    " + str(self.email) + "\n    " + str(self.SS)
+        return string
+    
+
+class InvalidEmail(Exception):
+    pass
+
+
+class InvalidSocial(Exception):
+    pass
+
+
+class InvalidPassword(Exception):
+    pass
+
+
+class Email:
+
+    def __init__(self, email):
+        if "@" in email:
+            self.email = email
+        else:
+            raise InvalidEmail()
+
+    def __str__(self):
+        return self.email
+        
+
+class SS:
+
+    def __init__(self, social):
+        if "-" in social:
+            self.social = social
+        else:
+            raise InvalidSocial
+
+
+class Hash:
+    x = 0
+    def __init__(self, passwd):
+        if len(passwd) > 1:
+            self.hash = self.generate_hash(passwd)
+        else:
+            raise InvalidPassword
+
+    def __eq__(self, passwd):
+        return self.hash == self.generate_hash(passwd)
+
+    def generate_hash(self, passwd):
+        Hash.x += 1
+        return Hash.x
+
+class Testing(unittest.TestCase):
+    
+    def testEmail(self):
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoo.aaa")
+        self.assertRaises(InvalidEmail, Email, "myem@ail@yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "9myemail@yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myema.il@yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myema?il@yahoo.org")
+        self.assertRaises(InvalidEmail, Email, "myemail!@yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myemail%@yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myemail+@yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myemail@7yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoo!.com")
+        self.assertRaises(InvalidEmail, Email, "myemail@#yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myemail@$yahoo.com")
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoo.blt")
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoo.why")
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoo.TheresSoMuchToTest")
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoo.edd")
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoo?.com")
+        self.assertRaises(InvalidEmail, Email, "myemail@yahoocom")
+        self.assertRaises(InvalidEmail, Email, "myemailyahoo.com")
+        
+    def testSS(self):
+        self.assertRaises(InvalidSocial, SS, "12-45-6789")
+        self.assertRaises(InvalidSocial, SS, "123-445-6789")
+        self.assertRaises(InvalidSocial, SS, "123-45-64789")
+        self.assertRaises(InvalidSocial, SS, "000-45-6789")
+        self.assertRaises(InvalidSocial, SS, "123-00-6789")
+        self.assertRaises(InvalidSocial, SS, "123-45-0000")
+        self.assertRaises(InvalidSocial, SS, "666-45-6789")
+        self.assertRaises(InvalidSocial, SS, "900-45-6789")
+        self.assertRaises(InvalidSocial, SS, "950-45-6789")
+        self.assertRaises(InvalidSocial, SS, "999-45-6789")
+        self.assertRaises(InvalidSocial, SS, "078-05-1120")
+        self.assertRaises(InvalidSocial, SS, "a45-45-6789")
+        self.assertRaises(InvalidSocial, SS, "123-b5-6789")
+        self.assertRaises(InvalidSocial, SS, "123-45-c789")
+        self.assertRaises(InvalidSocial, SS, "1@3-45-6789")
+        self.assertRaises(InvalidSocial, SS, "123456789")
+        self.assertRaises(InvalidSocial, SS, "123-456789")
+     
+     def testHash(self):
+        self.assertEqual(Hash("password"), Hash("password"))
+        self.assertNotEqual(Hash("password"), Hash("NotPassword"))
+        self.assertRaises(InvalidPassword, Hash, "a")
+        self.assertRaises(InvalidPassword, Hash, "")
+        
