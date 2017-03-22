@@ -61,7 +61,7 @@ class Hash:
         return self.hash == self.generate_hash(passwd)
 
     def generate_hash(self, passwd):
-        Hash.x += 1
+        Hash.x += 2
         return Hash.x
 
 class Testing(unittest.TestCase):
